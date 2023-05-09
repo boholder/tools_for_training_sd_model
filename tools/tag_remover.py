@@ -18,13 +18,18 @@ def remove_tags(config: dict[str, [str, list[str]]]):
     backup_dir = backup_dir if backup_dir else captions_dir
 
     tags_to_remove: list[str] = config.get('tags_to_remove')
+    if len(tags_to_remove) == 0:
+        tags_to_remove.append("PLACE_HOLDER")
     tags_to_remove_ = tags_to_remove[0] if len(tags_to_remove) == 1 else f"({'|'.join(config.get('tags_to_remove'))})"
     tags_to_remove_pattern = f"(?<=,)\\s*{tags_to_remove_}\\s*,?"
     # can't use (?<=^|,) or (?<=[,^])
     tags_to_remove_pattern_head = f"^\\s*{tags_to_remove_}\\s*,?"
 
     part_of_tags_to_remove: list[str] = config.get('part_of_tags_to_remove')
-    part_of_tags_to_remove_ = part_of_tags_to_remove[0] if len(part_of_tags_to_remove) == 1 else f"({'|'.join(config.get('part_of_tags_to_remove'))})"
+    if len(part_of_tags_to_remove) == 0:
+        part_of_tags_to_remove.append("PLACE_HOLDER")
+    part_of_tags_to_remove_ = part_of_tags_to_remove[0] if len(
+        part_of_tags_to_remove) == 1 else f"({'|'.join(config.get('part_of_tags_to_remove'))})"
     part_of_tags_to_remove_pattern = f"(?<=,)[\\s\\w]*{part_of_tags_to_remove_}[\\s\\w]*,?"
     part_of_tags_to_remove_pattern_head = f"^[\\s\\w]*{part_of_tags_to_remove_}[\\s\\w]*,?"
 
@@ -77,7 +82,8 @@ if __name__ == '__main__':
         'part_of_tags_to_remove': [],
         # if not set, backup files will be put into same directory as caption files.
         # call the recover() function to replace modified captions with backup files.
-        'backup_dir': r'',
+        'backup_dir': r'G:\DIY\2021-2023DIY\tana-SD-LoRA\remove-bak',
     }
 
     remove_tags(CONFIG)
+    # recover(CONFIG)
